@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     google_api_key: SecretStr
 
     chat_model: str = "gemini-3.8-flash"
+    # Gemini 3 "thinks" before answering. Answering from a few retrieved passages
+    # needs little of it; "low" keeps answers fast. Options: minimal, low, medium, high.
+    reasoning_effort: str = "low"
+    # How many retrieved chunks are given to the LLM as sources.
+    top_k: int = 5
     embedding_model: str = "gemini-embedding-2"
     # Gemini embeddings can be truncated (Matryoshka): 768 keeps nearly all the
     # retrieval quality of the full 3072 at a quarter of the storage.
