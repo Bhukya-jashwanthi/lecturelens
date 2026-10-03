@@ -20,7 +20,8 @@ class Settings(BaseSettings):
 
     chat_model: str = "gemini-3.8-flash"
     # Gemini 3 "thinks" before answering. Answering from a few retrieved passages
-    # needs little of it; "low" keeps answers fast. Options: minimal, low, medium, high.
+    # needs little of it; "low" keeps answers fast (~2s). gemini-3.8-flash accepts
+    # low, medium or high ("minimal" is rejected by this model).
     reasoning_effort: str = "low"
     # How many retrieved chunks are given to the LLM as sources.
     top_k: int = 5
