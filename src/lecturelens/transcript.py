@@ -131,7 +131,10 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     if len(sys.argv) != 2:
         sys.exit("Usage: python -m lecturelens.transcript <youtube-url-or-id>")
-    t = load_transcript(sys.argv[1])
+    try:
+        t = load_transcript(sys.argv[1])
+    except TranscriptError as exc:
+        sys.exit(f"Error: {exc}")
     minutes = (t.segments[-1].start + t.segments[-1].duration) / 60
     print(f"\n{t.title}  ({t.channel})")
     print(f"{len(t.segments)} segments, {minutes:.1f} min, language={t.language}")
