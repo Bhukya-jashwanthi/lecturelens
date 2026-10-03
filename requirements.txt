@@ -1,0 +1,19 @@
+# LLM orchestration (LangChain split into small packages; we install only what we use)
+langchain-core==1.6.6
+langchain-google-genai==4.4.0
+langchain-chroma==1.1.0
+
+# Vector database and keyword search
+chromadb==1.5.9
+rank-bm25==0.2.2
+
+# Data source
+youtube-transcript-api==1.2.4
+
+# Config and UI
+pydantic-settings==2.15.0
+python-dotenv==1.2.4
+streamlit==1.65.0
+
+# Testing
+pytest==9.1.1
