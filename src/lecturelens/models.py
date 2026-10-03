@@ -35,7 +35,7 @@ class Transcript:
 
 @dataclass
 class Chunk:
-    """A searchable window of a lecture (~60 seconds), the unit we embed and retrieve."""
+    """A searchable window of a lecture (~30 seconds by default), the unit we embed and retrieve."""
 
     chunk_id: str  # "<video_id>:<index>", unique across all lectures
     video_id: str

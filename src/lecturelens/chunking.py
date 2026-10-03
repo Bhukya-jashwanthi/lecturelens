@@ -17,8 +17,10 @@ import sys
 
 from lecturelens.models import Chunk, Transcript
 
-DEFAULT_WINDOW_SECONDS = 60.0
-DEFAULT_OVERLAP_SECONDS = 15.0
+# Chosen by evaluation (eval/results.md): with hybrid search, 30s windows put the
+# right moment first far more often than 60s or 120s windows (MRR 0.90 vs 0.77 / 0.80).
+DEFAULT_WINDOW_SECONDS = 30.0
+DEFAULT_OVERLAP_SECONDS = 5.0
 
 
 def chunk_transcript(

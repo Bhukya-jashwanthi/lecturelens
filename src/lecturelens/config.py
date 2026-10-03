@@ -18,10 +18,12 @@ class Settings(BaseSettings):
     # SecretStr hides the value in logs and error messages (prints as '**********').
     google_api_key: SecretStr
 
-    chat_model: str = "gemini-3.8-flash"
-    # Gemini 3 "thinks" before answering. Answering from a few retrieved passages
-    # needs little of it; "low" keeps answers fast (~2s). gemini-3.8-flash accepts
-    # low, medium or high ("minimal" is rejected by this model).
+    # A "lite" model: answering from a few retrieved passages doesn't need the largest
+    # model, it responds in about a second, and the free tier allows far more requests
+    # per day than gemini-3.8-flash (20/day). Quality was checked with eval/evaluate.py.
+    chat_model: str = "gemini-3.5-flash-lite"
+    # Gemini 3 "thinks" before answering; little of that is needed here.
+    # Accepted values depend on the model (gemini-3.8-flash rejects "minimal").
     reasoning_effort: str = "low"
     # How many retrieved chunks are given to the LLM as sources.
     top_k: int = 5

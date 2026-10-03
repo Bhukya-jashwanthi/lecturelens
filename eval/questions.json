@@ -1,0 +1,38 @@
+{
+  "description": "Hand-labelled retrieval test set for 3Blue1Brown 'But what is a neural network?' (aircAruvnKk). Each answer range is [start_seconds, end_seconds] where the answer is spoken; a retrieved chunk is a hit if it overlaps any range.",
+  "video_id": "aircAruvnKk",
+  "questions": [
+    {"q": "Why is recognising handwritten digits hard to write a program for?", "type": "paraphrase", "answer": [[49, 66]]},
+    {"q": "How many neurons are in the input layer?", "type": "keyword", "answer": [[183, 220]]},
+    {"q": "What does it mean when a neuron is lit up?", "type": "paraphrase", "answer": [[205, 216]]},
+    {"q": "What do the 10 neurons in the last layer represent?", "type": "keyword", "answer": [[226, 243]]},
+    {"q": "Why were two hidden layers of 16 neurons chosen?", "type": "keyword", "answer": [[254, 271]]},
+    {"q": "How does the network report which digit it thinks it sees?", "type": "paraphrase", "answer": [[322, 332]]},
+    {"q": "How can a nine be broken down into simpler parts?", "type": "paraphrase", "answer": [[348, 367]]},
+    {"q": "What might the neurons in the second layer detect?", "type": "paraphrase", "answer": [[435, 445]]},
+    {"q": "Apart from images, which tasks break down into layers of abstraction?", "type": "paraphrase", "answer": [[480, 500]]},
+    {"q": "What is a weight on a connection?", "type": "keyword", "answer": [[548, 565]]},
+    {"q": "How are positive and negative weights shown visually?", "type": "paraphrase", "answer": [[567, 585]]},
+    {"q": "How could a neuron be set up to notice an edge?", "type": "paraphrase", "answer": [[599, 614]]},
+    {"q": "Which function squashes any number into the range from zero to one?", "type": "paraphrase", "answer": [[624, 650]]},
+    {"q": "Why would you add a bias to the weighted sum?", "type": "keyword", "answer": [[657, 696]]},
+    {"q": "How many parameters does the whole network have?", "type": "keyword", "answer": [[738, 750], [947, 955]]},
+    {"q": "What does it mean for the network to learn?", "type": "paraphrase", "answer": [[751, 762]]},
+    {"q": "Why is it worth imagining setting all the weights by hand?", "type": "paraphrase", "answer": [[762, 806]]},
+    {"q": "How can one layer's computation be written compactly with a matrix?", "type": "keyword", "answer": [[812, 895]]},
+    {"q": "Which of the author's series helps with matrix vector multiplication?", "type": "paraphrase", "answer": [[854, 869]]},
+    {"q": "Why can the entire network be thought of as just a function?", "type": "paraphrase", "answer": [[917, 963]]},
+    {"q": "Who is Lisha Li?", "type": "keyword", "answer": [[1023, 1035]]},
+    {"q": "Which venture capital firm helped fund the video?", "type": "keyword", "answer": [[1027, 1035]]},
+    {"q": "What does ReLU stand for?", "type": "keyword", "answer": [[1059, 1062]]},
+    {"q": "Why do modern deep networks prefer ReLU over sigmoid?", "type": "paraphrase", "answer": [[1050, 1100]]}
+  ],
+  "out_of_scope": [
+    "How does backpropagation compute the gradient?",
+    "What is a convolutional neural network?",
+    "How large is the MNIST training set?",
+    "What learning rate should I use for training?",
+    "How do transformers use attention?",
+    "Who won the 2022 FIFA World Cup?"
+  ]
+}

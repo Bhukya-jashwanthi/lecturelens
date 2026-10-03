@@ -1,7 +1,7 @@
 import pytest
 from google.genai import errors
 
-from lecturelens.retry import is_retryable, with_retries
+from lecturelens.retry import is_retryable, server_retry_delay, with_retries
 
 
 def api_error(code: int) -> errors.APIError:
@@ -40,6 +40,32 @@ def test_gives_up_after_max_attempts():
     with pytest.raises(errors.APIError):
         with_retries(fn, attempts=3, base_delay=0)
     assert fn.calls == 3
+
+
+def quota_error(delay: str) -> errors.APIError:
+    details = [{"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": delay}]
+    return errors.APIError(429, {"error": {"code": 429, "message": "quota", "details": details}})
+
+
+def test_reads_server_requested_delay():
+    assert server_retry_delay(quota_error("52.8s")) == 52.8
+    assert server_retry_delay(api_error(503)) is None
+    assert server_retry_delay(ValueError("unrelated")) is None
+
+
+def test_waits_for_server_requested_delay(monkeypatch):
+    sleeps = []
+    monkeypatch.setattr("lecturelens.retry.time.sleep", sleeps.append)
+    assert with_retries(Flaky(quota_error("3s")), base_delay=0) == "ok"
+    assert sleeps == [4.0]  # requested 3s + 1s margin
+
+
+def test_gives_up_immediately_when_server_asks_for_a_very_long_wait(monkeypatch):
+    monkeypatch.setattr("lecturelens.retry.time.sleep", lambda s: pytest.fail("should not sleep"))
+    fn = Flaky(quota_error("3600s"))
+    with pytest.raises(errors.APIError):
+        with_retries(fn)
+    assert fn.calls == 1
 
 
 def test_detects_errors_wrapped_by_langchain():

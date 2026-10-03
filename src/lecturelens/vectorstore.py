@@ -22,7 +22,7 @@ from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-from lecturelens.chunking import chunk_transcript
+from lecturelens.chunking import DEFAULT_OVERLAP_SECONDS, DEFAULT_WINDOW_SECONDS, chunk_transcript
 from lecturelens.config import get_settings
 from lecturelens.models import Chunk, Transcript
 from lecturelens.retry import with_retries
@@ -98,10 +98,15 @@ def document_to_chunk(doc: Document) -> Chunk:
     )
 
 
-def index_transcript(transcript: Transcript, store: Chroma | None = None) -> int:
+def index_transcript(
+    transcript: Transcript,
+    store: Chroma | None = None,
+    window_seconds: float = DEFAULT_WINDOW_SECONDS,
+    overlap_seconds: float = DEFAULT_OVERLAP_SECONDS,
+) -> int:
     """Chunk, embed and store a lecture. Re-indexing the same lecture replaces it. Returns the chunk count."""
     store = store or get_vectorstore()
-    chunks = chunk_transcript(transcript)
+    chunks = chunk_transcript(transcript, window_seconds, overlap_seconds)
 
     # Idempotent: remove the lecture's old chunks first, so indexing twice never
     # creates duplicates (and changed chunking settings fully take effect).
