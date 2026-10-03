@@ -31,3 +31,35 @@ class Transcript:
     def url(self) -> str | None:
         """Link to the video, or None for caption files without a YouTube video."""
         return f"https://www.youtube.com/watch?v={self.video_id}" if self.youtube else None
+
+
+@dataclass
+class Chunk:
+    """A searchable window of a lecture (~60 seconds), the unit we embed and retrieve."""
+
+    chunk_id: str  # "<video_id>:<index>", unique across all lectures
+    video_id: str
+    title: str
+    text: str
+    start: float
+    end: float
+    youtube: bool = True
+
+    @property
+    def timestamp(self) -> str:
+        return format_timestamp(self.start)
+
+    @property
+    def url(self) -> str | None:
+        """Link that opens the video at this chunk's start time."""
+        if not self.youtube:
+            return None
+        return f"https://www.youtube.com/watch?v={self.video_id}&t={int(self.start)}s"
+
+
+def format_timestamp(seconds: float) -> str:
+    """Format seconds as m:ss, or h:mm:ss for times past one hour (like YouTube does)."""
+    total = int(seconds)
+    hours, rest = divmod(total, 3600)
+    minutes, secs = divmod(rest, 60)
+    return f"{hours}:{minutes:02d}:{secs:02d}" if hours else f"{minutes}:{secs:02d}"
