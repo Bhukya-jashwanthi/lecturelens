@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     google_api_key: SecretStr
 
     # A "lite" model: answering from a few retrieved passages doesn't need the largest
-    # model, it responds in about a second, and the free tier allows far more requests
-    # per day than gemini-3.8-flash (20/day). Quality was checked with eval/evaluate.py.
+    # model, and it responds in about a second. gemini-3.8-flash's free tier allows only
+    # 20 requests per day. Grounding was checked with eval/evaluate.py --answers.
     chat_model: str = "gemini-3.5-flash-lite"
     # Gemini 3 "thinks" before answering; little of that is needed here.
     # Accepted values depend on the model (gemini-3.8-flash rejects "minimal").
