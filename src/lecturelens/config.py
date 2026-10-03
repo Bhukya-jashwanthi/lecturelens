@@ -20,6 +20,9 @@ class Settings(BaseSettings):
 
     chat_model: str = "gemini-3.8-flash"
     embedding_model: str = "gemini-embedding-2"
+    # Gemini embeddings can be truncated (Matryoshka): 768 keeps nearly all the
+    # retrieval quality of the full 3072 at a quarter of the storage.
+    embedding_dimensions: int = 768
 
     # Where cached transcripts and the vector database are stored (git-ignored).
     data_dir: Path = Path("data")
@@ -27,6 +30,10 @@ class Settings(BaseSettings):
     @property
     def transcripts_dir(self) -> Path:
         return self.data_dir / "transcripts"
+
+    @property
+    def chroma_dir(self) -> Path:
+        return self.data_dir / "chroma"
 
 
 @lru_cache
