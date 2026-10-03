@@ -1,7 +1,7 @@
 import pytest
 from google.genai import errors
 
-from lecturelens.retry import is_retryable, server_retry_delay, with_retries
+from lecturelens.retry import describe_api_error, is_retryable, server_retry_delay, with_retries
 
 
 def api_error(code: int) -> errors.APIError:
@@ -66,6 +66,15 @@ def test_gives_up_immediately_when_server_asks_for_a_very_long_wait(monkeypatch)
     with pytest.raises(errors.APIError):
         with_retries(fn)
     assert fn.calls == 1
+
+
+def test_describe_api_error_gives_user_friendly_messages():
+    assert "quota for today" in describe_api_error(quota_error("21354s"))
+    assert "about 6 hour" in describe_api_error(quota_error("21354s"))
+    assert "wait a minute" in describe_api_error(quota_error("30s"))
+    assert "temporarily unavailable" in describe_api_error(api_error(503))
+    assert "GOOGLE_API_KEY" in describe_api_error(api_error(403))
+    assert "Unexpected error (ValueError)" in describe_api_error(ValueError("x"))
 
 
 def test_detects_errors_wrapped_by_langchain():

@@ -108,15 +108,20 @@ def index_transcript(
     store = store or get_vectorstore()
     chunks = chunk_transcript(transcript, window_seconds, overlap_seconds)
 
-    # Idempotent: remove the lecture's old chunks first, so indexing twice never
-    # creates duplicates (and changed chunking settings fully take effect).
-    old_ids = store.get(where={"video_id": transcript.video_id}, include=[])["ids"]
-    if old_ids:
-        store.delete(ids=old_ids)
-
     docs = [chunk_to_document(c) for c in chunks]
-    with_retries(lambda: store.add_documents(docs, ids=[d.id for d in docs]))
-    logger.info("Indexed %s: %d chunks", transcript.video_id, len(docs))
+    new_ids = [d.id for d in docs]
+    old_ids = store.get(where={"video_id": transcript.video_id}, include=[])["ids"]
+
+    # Write the new chunks first: Chroma upserts, so chunks with the same ID are
+    # overwritten. If embedding fails (quota, outage), the old index stays intact.
+    with_retries(lambda: store.add_documents(docs, ids=new_ids))
+
+    # Only then remove leftovers (e.g. after changing the chunk size), so re-indexing
+    # never creates duplicates.
+    stale_ids = sorted(set(old_ids) - set(new_ids))
+    if stale_ids:
+        store.delete(ids=stale_ids)
+    logger.info("Indexed %s: %d chunks (%d stale removed)", transcript.video_id, len(docs), len(stale_ids))
     return len(docs)
 
 

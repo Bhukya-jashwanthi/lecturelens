@@ -16,6 +16,7 @@ from pydantic import ValidationError
 from lecturelens.config import get_settings
 from lecturelens.models import format_timestamp
 from lecturelens.rag_chain import Answer, LectureQA
+from lecturelens.retry import describe_api_error
 from lecturelens.transcript import TranscriptError, import_caption_file, load_transcript
 from lecturelens.vectorstore import delete_lecture, index_transcript, list_lectures
 
@@ -75,6 +76,9 @@ def index_with_feedback(load) -> None:
                 count = index_transcript(transcript)
             except TranscriptError as exc:
                 st.error(str(exc))
+                return
+            except Exception as exc:  # embedding API failure: quota, outage, bad key...
+                st.error(f"Could not index the lecture. {describe_api_error(exc)}")
                 return
         st.success(f"Added **{transcript.title}** ({count} chunks).")
 
@@ -155,7 +159,7 @@ def chat(selected_ids: list[str]) -> None:
             answer = get_qa().ask(question, history=history, video_ids=selected_ids)
         except Exception as exc:  # API outage after retries, quota exhausted, network down...
             st.session_state.messages.pop()  # let the user simply ask again
-            st.error(f"Sorry, the AI service is unavailable right now ({type(exc).__name__}). Please try again.")
+            st.error(f"Sorry, I couldn't answer that. {describe_api_error(exc)}")
             return
     st.session_state.messages.append({"role": "assistant", "content": answer.text, "answer": answer})
 

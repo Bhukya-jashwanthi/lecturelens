@@ -44,6 +44,29 @@ def test_reindexing_replaces_instead_of_duplicating(store):
     assert list_lectures(store)[0]["chunks"] == first
 
 
+def test_reindexing_with_fewer_chunks_removes_stale_ones(store):
+    long_version = index_transcript(lecture("aaaaaaaaaaa", "Neural networks", n_segments=40), store)
+    short_version = index_transcript(lecture("aaaaaaaaaaa", "Neural networks", n_segments=10), store)
+    assert short_version < long_version
+    assert list_lectures(store)[0]["chunks"] == short_version
+
+
+class FailingEmbedding(DeterministicFakeEmbedding):
+    def embed_documents(self, texts):
+        raise RuntimeError("quota exhausted")
+
+
+def test_failed_reindex_keeps_the_existing_index(tmp_path):
+    good = build_vectorstore(DeterministicFakeEmbedding(size=32), tmp_path / "chroma", "test")
+    count = index_transcript(lecture("aaaaaaaaaaa", "Neural networks"), good)
+
+    failing = build_vectorstore(FailingEmbedding(size=32), tmp_path / "chroma", "test")  # same collection
+    with pytest.raises(RuntimeError):
+        index_transcript(lecture("aaaaaaaaaaa", "Neural networks"), failing)
+
+    assert list_lectures(good)[0]["chunks"] == count  # nothing was deleted
+
+
 def test_search_returns_exact_match_first_with_metadata(store):
     transcript = lecture("aaaaaaaaaaa", "Neural networks")
     index_transcript(transcript, store)

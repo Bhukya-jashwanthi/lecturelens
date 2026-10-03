@@ -51,6 +51,22 @@ def server_retry_delay(exc: BaseException) -> float | None:
     return None
 
 
+def describe_api_error(exc: BaseException) -> str:
+    """A short, user-facing explanation of a failed Gemini API call."""
+    status = _api_status(exc)
+    if status == 429:
+        delay = server_retry_delay(exc)
+        if delay is not None and delay > _MAX_SERVER_DELAY:
+            hours = max(1, round(delay / 3600))
+            return f"The free Gemini API quota for today is used up. It resets in about {hours} hour(s)."
+        return "The Gemini API rate limit was reached. Please wait a minute and try again."
+    if status in _RETRYABLE_STATUS:
+        return "The Gemini API is temporarily unavailable. Please try again shortly."
+    if status in (400, 401, 403):
+        return "The Gemini API rejected the request. Check GOOGLE_API_KEY and the model names in .env."
+    return f"Unexpected error ({type(exc).__name__}). Please try again."
+
+
 def is_retryable(exc: BaseException) -> bool:
     return _api_status(exc) in _RETRYABLE_STATUS
 
