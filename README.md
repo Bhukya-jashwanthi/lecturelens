@@ -10,7 +10,18 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-> *"What is the bias used for in a neuron?"* → an answer drawn only from the lecture, citing **[▶ 10:32]** and **[▶ 11:20]**. Clicking a citation plays the video from that moment.
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshot-player.png" alt="LectureLens with two indexed lectures, an embedded YouTube player and a question about AI agents"></td>
+    <td width="50%"><img src="docs/screenshot-answer.png" alt="The full answer with timestamp citations, Play buttons and the retrieval details panel"></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Embedded player jumps to the cited moment</em></td>
+    <td align="center"><em>Every point cites its timestamp</em></td>
+  </tr>
+</table>
+
+> *"Explain the workflow of AI agents"* → an answer drawn only from the indexed lectures, where every point cites the moment it comes from (**▶ 6:00**, **▶ 6:30**, **▶ 6:59**). Clicking a citation or a ▶ Play button plays the video from that moment.
 
 ---
 
