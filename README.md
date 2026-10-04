@@ -2,13 +2,13 @@
 
 **Ask questions across hours of YouTube lectures and get grounded answers with clickable timestamp citations that jump to the exact moment in the video.**
 
-[![tests](https://github.com/Bhukya-jashwanthi/lecturelens/actions/workflows/tests.yml/badge.svg)](https://github.com/Bhukya-jashwanthi/lecturelens/actions/workflows/tests.yml)
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
-![LangChain](https://img.shields.io/badge/LangChain-1.x-1C3C3C)
-![ChromaDB](https://img.shields.io/badge/ChromaDB-vector%20store-FF6F00)
-![Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?logo=google&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green)
+<a href="https://github.com/Bhukya-jashwanthi/lecturelens/actions/workflows/tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/Bhukya-jashwanthi/lecturelens/tests.yml?label=tests&style=flat-square&logo=github&logoColor=white&labelColor=30363d&color=30363d" alt="tests" height="18" /></a>
+<img src="https://img.shields.io/badge/Python-3.11%2B-30363d?style=flat-square&logo=python&logoColor=white&labelColor=30363d" alt="Python" height="18" />
+<img src="https://img.shields.io/badge/LangChain-1.x-30363d?style=flat-square&logo=langchain&logoColor=white&labelColor=30363d" alt="LangChain" height="18" />
+<img src="https://img.shields.io/badge/ChromaDB-vector%20store-30363d?style=flat-square&labelColor=30363d" alt="ChromaDB" height="18" />
+<img src="https://img.shields.io/badge/Google-Gemini-30363d?style=flat-square&logo=googlegemini&logoColor=white&labelColor=30363d" alt="Gemini" height="18" />
+<img src="https://img.shields.io/badge/Streamlit-UI-30363d?style=flat-square&logo=streamlit&logoColor=white&labelColor=30363d" alt="Streamlit" height="18" />
+<img src="https://img.shields.io/badge/license-MIT-30363d?style=flat-square&labelColor=30363d" alt="License" height="18" />
 
 <table>
   <tr>
